@@ -134,7 +134,8 @@ public class ThirdPersonController : MonoBehaviour
 
     #endregion
 
-    #region 方法Method
+    #region 練習方法Method
+    /*
     // 定義與實作較複雜程式的區塊、功能
     // 方法語法:修飾詞 傳回資料類型 方法名稱 (參數1, ...參數N) {程式區塊}
     // 常用傳回類型:無傳回  void - 此方法沒有傳回資料
@@ -152,11 +153,14 @@ public class ThirdPersonController : MonoBehaviour
         return 999;
     }
 
-    // 參數語法:資料類型 參數名稱
-    private void Skill(int damage)
+    // 參數語法:資料類型 參數名稱 指定 預設值
+    // 有預設值的參數可以不輸入引數，選填式參數
+    // ※選填式參數只能放在()右邊
+    private void Skill(int damage, string effect = "灰塵特效",string sound = "呼呼呼")
     {
         print("參數版本 - 傷害值: " + damage);
-        print("參數版本 - 技能特效:");
+        print("參數版本 - 技能特效:"+ effect);
+        print("參數版本 - 聲音特效:" + sound);
     }
 
     // 對照組:不使用參數
@@ -171,31 +175,88 @@ public class ThirdPersonController : MonoBehaviour
         print("傷害值: " + 150);
         print("技能特效:");
     }
-
     private void skill200()
     {
         print("傷害值: " + 200);
         print("技能特效:");
     }
 
-
-
-
+    // ※非必要但很重要
+    // BMI = 體重 / 身高 * 身高
+    /// <summary>
+    /// 計算BMI方法
+    /// </summary>
+    /// <param name="weight"></param>
+    /// <param name="height"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    private float BMI(float weight, float height, string name = "測試")
+    {
+        print(name + " 的BMI");
+        return weight / (height * height);
+    }
+    */
     #endregion
+
+    // 折疊 Ctrl M O
+    // 展開 Ctrl M L
+    /// <summary>
+    /// 移動
+    /// </summary>
+    /// <param name="moveSpeed">移動速度</param>
+    private void Move(float moveSpeed) 
+    { 
+
+    }
+    /// <summary>
+    /// 移動按鍵輸入
+    /// </summary>
+    /// <returns>移動按鍵值</returns>
+    private float MoveKeyInput() 
+    {
+        return 0f;
+    }
+    /// <summary>
+    /// 檢查地板
+    /// </summary>
+    /// <returns>是否碰到地板</returns>
+    private bool CheckGround() 
+    {
+        return false;
+    } 
+    /// <summary>
+    /// 跳躍
+    /// </summary>
+    private void Jump() 
+    {
+
+    }
+    /// <summary>
+    /// 更新動畫
+    /// </summary>
+    private void UpdateAnime()
+    {
+
+    }
+
+
+
+
+    
 
     #region 事件Event
     // 特定時間點會執行的方法，程式的入口 Start 等於 Console Main
     // 開始事件 : 遊戲開始時執行一次
     private void Start()
     {
-        #region 輸出方法
-        /** 輸出方法
-        print("HELLOWORLD!");
 
-        Debug.Log("一般訊息");
-        Debug.LogWarning("警告訊息");
-        Debug.LogError("錯誤訊息");
-        */
+        #region 輸出方法
+        // 輸出方法
+        //print("HELLOWORLD!");
+
+        //Debug.Log("一般訊息");
+        //Debug.LogWarning("警告訊息");
+        //Debug.LogError("錯誤訊息");
         #endregion
 
         #region 屬性練習
@@ -219,6 +280,9 @@ public class ThirdPersonController : MonoBehaviour
         print("HP : " + _hp);
         */
         #endregion
+
+        #region 方法練習
+        /*
         // 呼叫自訂方法語法: 方法名稱();
         Test();
         Test();
@@ -232,11 +296,17 @@ public class ThirdPersonController : MonoBehaviour
         skill100();
         skill150();
         skill200();
-        //呼叫有參數方法時，必須輸入對應的引數
+        // 呼叫有參數方法時，必須輸入對應的引數
         Skill(100);
-        Skill(999);
+        Skill(999,"爆炸特效");
+        // 有多個選填式參數時可使用指名參數語法:  參數名稱:值
+        Skill(500, sound:"咻咻咻") ;
 
-           
+        print(BMI(68, 1.723f, "我"));
+        */
+        #endregion
+
+
     }
 
     // 更新事件 : 一秒約執行 60 次，60 FPS -Frame Per Second
