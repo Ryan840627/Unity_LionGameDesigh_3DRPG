@@ -18,7 +18,7 @@ public class APIStatic : MonoBehaviour
         //語法:
         //類別名稱，靜態屬性 指定 值
         // 只要看到 Read Only 就不能設定
-        Cursor.visible = false;
+        Cursor.visible = true;
         // Random.value = 99.9f; 唯獨屬性不能設定
         #endregion
 
@@ -40,7 +40,11 @@ public class APIStatic : MonoBehaviour
     {
         #region 靜態屬性
         // print("經過多久 :" + Time.timeSinceLevelLoad);
+        #endregion
 
+        #region 靜態方法
+        float h = Input.GetAxis("Horizontal");
+        print("水平值 : " + h);
         #endregion
     }
 }
