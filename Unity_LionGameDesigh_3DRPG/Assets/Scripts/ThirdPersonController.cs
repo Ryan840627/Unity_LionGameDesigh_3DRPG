@@ -45,7 +45,7 @@ public class ThirdPersonController : MonoBehaviour
     public string AnimatorPlayerDie = "死亡開關";
 
     private AudioSource aud;
-    private Rigidbody rid;
+    private Rigidbody rig;
     private Animator ani;
 
     #region Unity 資料類型
@@ -242,7 +242,7 @@ public class ThirdPersonController : MonoBehaviour
 
 
 
-    
+    public GameObject playerObject;
 
     #region 事件Event
     // 特定時間點會執行的方法，程式的入口 Start 等於 Console Main
@@ -306,6 +306,16 @@ public class ThirdPersonController : MonoBehaviour
         */
         #endregion
 
+        //要取得腳本的遊戲物件可以使用關鍵字 gameObject
+
+        //取得元件方式
+        // 1. 物件欄位名稱，取得元件(類型(元件類型)) 當作 元件類型
+        aud = playerObject.GetComponent(typeof(AudioSource)) as AudioSource;
+        // 2.此腳本遊戲物件，取得元件<泛型>();
+        rig = gameObject.GetComponent<Rigidbody>();
+        // 3. 取得元件<泛型>();
+        // 類別可以使用繼承類別(父類別)的成員、公開或保護 欄位、屬性及方法
+        ani = GetComponent<Animator>();
 
     }
 

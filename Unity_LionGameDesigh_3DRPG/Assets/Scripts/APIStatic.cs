@@ -8,6 +8,8 @@ public class APIStatic : MonoBehaviour
     private void Start()
     {
         #region 靜態屬性
+        //與非靜態差異
+        //1.不需要實體物件
         //取得
         //語法
         //類別名稱，靜態屬性
