@@ -44,9 +44,12 @@ public class ThirdPersonController : MonoBehaviour
     public string AnimatorPlayerHurt = "受傷觸發";
     public string AnimatorPlayerDie = "死亡開關";
 
+    [Header("玩家遊戲物件")]
+    public GameObject playerObject;
     private AudioSource aud;
     private Rigidbody rig;
     private Animator ani;
+    
 
     #region Unity 資料類型
     /**練習Unity 資料類型
@@ -198,23 +201,32 @@ public class ThirdPersonController : MonoBehaviour
     */
     #endregion
 
+
+    #region 方法
     // 折疊 Ctrl M O
     // 展開 Ctrl M L
     /// <summary>
     /// 移動
     /// </summary>
     /// <param name="moveSpeed">移動速度</param>
-    private void Move(float moveSpeed) 
-    { 
-
+    private void Move(float moveSpeed)
+    {
+        // 取消Animator Apply Motion(使用動畫內位移資訊來進行移動) 
+        // 剛體.加速度 = 三圍向量(參數);  - 加速度用來控制剛體三個軸向的移動速度
+        // 前方 * 輸入值 * 移動速度
+        // 使用前後左右軸向運動並且保持原本地心引力
+        rig.velocity = Vector3.forward * MoveInput("Vertical") * moveSpeed +
+                       Vector3.right * MoveInput("Horizontal") * moveSpeed +
+                       Vector3.up * rig.velocity.y;
     }
     /// <summary>
     /// 移動按鍵輸入
     /// </summary>
+    /// <param name="axisName">要取得的軸向名稱</param>
     /// <returns>移動按鍵值</returns>
-    private float MoveKeyInput() 
+    private float MoveInput(string axisName) 
     {
-        return 0f;
+        return Input.GetAxis(axisName);
     }
     /// <summary>
     /// 檢查地板
@@ -222,14 +234,24 @@ public class ThirdPersonController : MonoBehaviour
     /// <returns>是否碰到地板</returns>
     private bool CheckGround() 
     {
-        return false;
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position +
+            transform.right * CheckGroundMove.x +
+            transform.up * CheckGroundMove.y +
+            transform.forward * CheckGroundMove.z
+            , CheckGroundRadius,1<<3);
+
+        // print("球體碰到的第一個物件 : " + hits[0].name);
+
+        // 傳回 碰撞陣列數量>0 ，只要碰到指定圖層物件就代表在地面上
+        return hits.Length >0;
     } 
     /// <summary>
     /// 跳躍
     /// </summary>
     private void Jump() 
     {
-
+        print("是否在地面上 : " + CheckGround());
     }
     /// <summary>
     /// 更新動畫
@@ -239,10 +261,10 @@ public class ThirdPersonController : MonoBehaviour
 
     }
 
+    #endregion
 
 
 
-    public GameObject playerObject;
 
     #region 事件Event
     // 特定時間點會執行的方法，程式的入口 Start 等於 Console Main
@@ -324,7 +346,30 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Update()
     {
+        CheckGround();
+        Jump();
+    }
+    //固定更新事件 : 固定0.02秒執行一次  -  50FPS
+    //處理物理行為，例如 : Rigibody API
+    private void FixedUpdate()
+    {
+        Move(speed);
+    }
 
+    //繪製圖示事件 : 
+    // 在Unity Editor 內繪製圖示輔助開發，發布後會自動隱藏
+    private void OnDrawGizmos()
+    {
+        // 1. 指定顏色
+        // 2. 繪製圖營
+        Gizmos.color = new Color(1, 0.5f, 0.5f, 0.5f);
+        // transform 與此腳本在停一屬性面板的 Transform 元件
+        Gizmos.DrawSphere(
+            transform.position +
+            transform.right * CheckGroundMove.x +
+            transform.up * CheckGroundMove.y +
+            transform.forward * CheckGroundMove.z
+            , CheckGroundRadius);
     }
     #endregion
 }

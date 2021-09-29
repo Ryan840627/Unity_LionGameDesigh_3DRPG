@@ -2004,7 +2004,7 @@ GameObject:
   - component: {fileID: 1199603698}
   - component: {fileID: 1199603697}
   - component: {fileID: 1199603696}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u5730\u5F62"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2451,7 +2451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 92.04602
+      value: 91.98
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2459,7 +2459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 54.19837
+      value: 54.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2497,6 +2497,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: cba82b6640315de44881a49a1ab40a37, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
 --- !u!1 &1425199684 stripped
@@ -2520,7 +2524,7 @@ MonoBehaviour:
   jumpheight: 100
   OnTheGorund: 0
   CheckGroundMove: {x: 0, y: 0, z: 0}
-  CheckGroundRadius: 0.2
+  CheckGroundRadius: 0.3
   JumpSound: {fileID: 0}
   LandingSound: {fileID: 0}
   AnimatorPlayerWalk: "\u8D70\u8DEF\u958B\u95DC"
@@ -2556,7 +2560,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &1425199690
 AudioSource:
