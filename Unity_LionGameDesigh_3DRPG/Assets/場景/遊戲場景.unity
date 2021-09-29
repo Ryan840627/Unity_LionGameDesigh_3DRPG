@@ -2521,16 +2521,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10.5
-  jumpheight: 100
-  OnTheGorund: 0
+  jumpheight: 250
+  OnTheGround: 0
   CheckGroundMove: {x: 0, y: 0, z: 0}
-  CheckGroundRadius: 0.3
+  CheckGroundRadius: 0.2
   JumpSound: {fileID: 0}
   LandingSound: {fileID: 0}
   AnimatorPlayerWalk: "\u8D70\u8DEF\u958B\u95DC"
   AnimatorPlayerRun: "\u8DD1\u6B65\u958B\u95DC"
   AnimatorPlayerHurt: "\u53D7\u50B7\u89F8\u767C"
   AnimatorPlayerDie: "\u6B7B\u4EA1\u958B\u95DC"
+  AnimatorPlayerJump: "\u8DF3\u8E8D\u89F8\u767C"
+  AnimatorPlayerOnTheGround: "\u662F\u5426\u5728\u5730\u677F\u4E0A"
   playerObject: {fileID: 1425199684}
 --- !u!136 &1425199686
 CapsuleCollider:

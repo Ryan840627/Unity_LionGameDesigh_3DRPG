@@ -29,9 +29,9 @@ public class ThirdPersonController : MonoBehaviour
     [Header("移動速度"), Tooltip("用來調整角色移動速度"), Range(0, 500)]
     public float speed = 10.5f;
     [Header("跳躍高度"), Range(0, 1000)]
-    public int jumpheight = 100;
+    public int jumpheight = 250;
     [Header("檢查地面資料"), Tooltip("確認人物是否在地板上")]
-    public bool OnTheGorund = false;
+    public bool OnTheGround;
     public Vector3 CheckGroundMove;
     [Range(0, 3)]
     public float CheckGroundRadius = 0.2f;
@@ -43,6 +43,8 @@ public class ThirdPersonController : MonoBehaviour
     public string AnimatorPlayerRun = "跑步開關";
     public string AnimatorPlayerHurt = "受傷觸發";
     public string AnimatorPlayerDie = "死亡開關";
+    public string AnimatorPlayerJump = "跳躍觸發";
+    public string AnimatorPlayerOnTheGround = "是否在地板上";
 
     [Header("玩家遊戲物件")]
     public GameObject playerObject;
@@ -97,7 +99,7 @@ public class ThirdPersonController : MonoBehaviour
     #endregion
 
     #region 屬性Property
-    /**屬性練習
+    /** 屬性練習
     // 屬性不會顯示在面板上
     // 儲存資料，與欄位相同
     // 差異在於 : 可以設定存取權限 Get set
@@ -132,8 +134,10 @@ public class ThirdPersonController : MonoBehaviour
 
     public int MyProperty { get; set; }
     */
+    // C#6.0 存取值 可以使用Lambda => 運算子
+    // 語法 : get => (程式區塊) - 單行可省略大括號
+    private bool keyJump { get => Input.GetKeyDown(KeyCode.Space); }
 
-    public KeyCode keyJump { get; }
 
     #endregion
 
@@ -240,25 +244,53 @@ public class ThirdPersonController : MonoBehaviour
             transform.up * CheckGroundMove.y +
             transform.forward * CheckGroundMove.z
             , CheckGroundRadius,1<<3);
-
         // print("球體碰到的第一個物件 : " + hits[0].name);
+        OnTheGround = hits.Length >0 ;
 
         // 傳回 碰撞陣列數量>0 ，只要碰到指定圖層物件就代表在地面上
-        return hits.Length >0;
+        return hits.Length > 0  ;
     } 
     /// <summary>
     /// 跳躍
     /// </summary>
     private void Jump() 
     {
-        print("是否在地面上 : " + CheckGround());
+        //並且&&
+        //如果在 地面上 並且按下 空白鍵 就 跳躍
+        if (CheckGround() && keyJump)
+        {
+            rig.AddForce(transform.up * jumpheight);
+        }
+        
     }
     /// <summary>
     /// 更新動畫
     /// </summary>
     private void UpdateAnime()
     {
+        /** 練習與走路動畫說明
+        // 預期成果
+        // 按下前或後時 將布林值設為 true
+        // 沒有按時 將布林值設為 false
+        // Input
+        // if (選擇條件)
+        // != ， == 比較運算子 (選擇條件)
 
+        // 當玩家往前或後移動時 true
+        // 沒有按下前或後時 false
+        // 垂直值 不等於 0 就代表 true
+        // 垂直值 等於 0 就代表 false
+
+        // 前後不等於 0 或 左右 不等於 0 都是走路
+        // || 或者
+        */
+
+        ani.SetBool(AnimatorPlayerWalk, MoveInput("Vertical") != 0 || MoveInput("Horizontal") != 0);
+        // 設定是否在地板上 動畫參數
+        ani.SetBool(AnimatorPlayerOnTheGround, OnTheGround);
+        // 如果按下跳躍鍵 就設定 跳躍觸發參數
+        // 判斷式 只有一行敘述(只有一個分號) 可以省略 大括號
+        if (keyJump) ani.SetTrigger(AnimatorPlayerJump);
     }
 
     #endregion
@@ -346,7 +378,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Update()
     {
-        CheckGround();
+        UpdateAnime();
         Jump();
     }
     //固定更新事件 : 固定0.02秒執行一次  -  50FPS
