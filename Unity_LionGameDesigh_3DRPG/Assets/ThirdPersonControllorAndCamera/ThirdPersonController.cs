@@ -30,6 +30,10 @@ namespace Ryan
         public string AnimatorPlayerDie = "死亡開關";
         public string AnimatorPlayerJump = "跳躍觸發";
         public string AnimatorPlayerOnTheGround = "是否在地板上";
+        [Header("面向速度"), Range(0, 50)]
+        public float speedLookAt = 2;
+        #endregion
+        #region 欄位 私人
 
         [Header("玩家遊戲物件")]
         public GameObject playerObject;
@@ -37,6 +41,10 @@ namespace Ryan
         private Rigidbody rig;
         private Animator ani;
 
+        /// <summary>
+        /// 攝影機類別
+        /// </summary>
+        private ThirdPersonCamera thirdPersonCamera;
         #endregion
 
         private bool keyJump { get => Input.GetKeyDown(KeyCode.Space); }
@@ -50,8 +58,10 @@ namespace Ryan
         /// <param name="moveSpeed">移動速度</param>
         private void Move(float moveSpeed)
         {
-            rig.velocity = Vector3.forward * MoveInput("Vertical") * moveSpeed +
-                           Vector3.right * MoveInput("Horizontal") * moveSpeed +
+            //Vector.forward 世界座標 的 前方(全域)
+            //transform.forward 此物件 的 前方(區域)
+            rig.velocity = transform.forward * MoveInput("Vertical") * moveSpeed +
+                           transform.right * MoveInput("Horizontal") * moveSpeed +
                            Vector3.up * rig.velocity.y;
         }
         /// <summary>
@@ -107,19 +117,36 @@ namespace Ryan
             if (keyJump) ani.SetTrigger(AnimatorPlayerJump);
         }
 
-        #endregion
+        private void LookAtForward()
+        {
+            //垂直軸向 取絕對值 後 大於 0.1 就處理 面向
+            if (Mathf.Abs(MoveInput("Vertical"))>0.1f)
+            {
+                // 取得前方角度 = 四元.面相角度(前方座標 - 本身座標)
+                Quaternion angle = Quaternion.LookRotation(thirdPersonCamera.PosForward - transform.position);
+                // 此物件的角度 = 四元.差值
+                transform.rotation = Quaternion.Lerp(transform.rotation, angle, 0.5f*speedLookAt);
+            }
+            
+        }
 
+        #endregion
+        
         #region 事件
         private void Start()
         {
             aud = playerObject.GetComponent(typeof(AudioSource)) as AudioSource;
             rig = gameObject.GetComponent<Rigidbody>();
             ani = GetComponent<Animator>();
+            //攝影機類別 = 透過類型尋找物件<泛型>();
+            //FindObjectOfType 不要放在 Update 內使用會造成大量效能負擔
+            thirdPersonCamera = FindObjectOfType<ThirdPersonCamera>();
         }
         private void Update()
         {
             UpdateAnime();
             Jump();
+            LookAtForward();
         }
         private void FixedUpdate()
         {
