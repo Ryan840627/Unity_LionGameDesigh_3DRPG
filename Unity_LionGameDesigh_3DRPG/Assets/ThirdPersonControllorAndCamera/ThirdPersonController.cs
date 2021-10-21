@@ -120,14 +120,13 @@ namespace Ryan
         private void LookAtForward()
         {
             //垂直軸向 取絕對值 後 大於 0.1 就處理 面向
-            if (Mathf.Abs(MoveInput("Vertical"))>0.1f)
+            if (Mathf.Abs(MoveInput("Vertical")) > 0.1f)
             {
                 // 取得前方角度 = 四元.面相角度(前方座標 - 本身座標)
                 Quaternion angle = Quaternion.LookRotation(thirdPersonCamera.PosForward - transform.position);
                 // 此物件的角度 = 四元.差值
-                transform.rotation = Quaternion.Lerp(transform.rotation, angle, 0.5f*speedLookAt);
-            }
-            
+                transform.rotation = Quaternion.Lerp(transform.rotation, angle, 0.5f * speedLookAt);
+            }  
         }
 
         #endregion
