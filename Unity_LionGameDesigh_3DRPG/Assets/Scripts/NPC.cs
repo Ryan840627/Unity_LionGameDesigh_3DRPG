@@ -48,6 +48,7 @@ namespace Ryan.Dialogue
         }
         /// <summary>
         /// 玩家進入範圍內 並解 按下指定按鍵 請對話系統執行 開始對話
+        /// 玩家退出範圍外 停止對話
         /// </summary>
         private void StartDialogue()
         {
@@ -55,6 +56,7 @@ namespace Ryan.Dialogue
             {
                 dialogueSystem.Dialogue(dataDialogue);
             }
+            else if (!checkPlayer()) dialogueSystem.StopDialogue();
         }
 
         private void Update()

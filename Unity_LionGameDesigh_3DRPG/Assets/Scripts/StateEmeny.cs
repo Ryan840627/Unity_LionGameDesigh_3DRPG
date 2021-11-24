@@ -1,0 +1,12 @@
+namespace Ryan.Enemy
+{
+    /// <summary>
+    /// 敵人狀態 : 等待、走路、追蹤、攻擊、受傷、死亡
+    /// </summary>
+    public enum StateEmeny
+    {
+        Idle,Walk,Track,Attack,Hurt,Dead
+    }
+}
+
+
