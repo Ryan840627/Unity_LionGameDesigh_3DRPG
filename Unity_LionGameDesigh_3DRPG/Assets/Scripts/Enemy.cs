@@ -31,6 +31,8 @@ namespace Ryan.Enemy
         public Vector3 v3AttackSize = Vector3.one;
         [Header("攻擊延遲傳送傷害時間"), Range(0, 5)]
         public float delaySendDamage = 0.5f;
+        [Header("面相玩家速度")]
+        public float speedLookAt = 10;
         #endregion
 
         #region 私人欄位
@@ -134,7 +136,7 @@ namespace Ryan.Enemy
         /// </summary>
         private void Idle()
         {
-            if (playerInTrackRange) state = StateEmeny.Track;             //如果 玩家進入 追蹤範圍 就切換為追蹤狀態  
+            if (playerInTrackRange && !targetIsDead) state = StateEmeny.Track;             //如果 玩家進入 追蹤範圍 就切換為追蹤狀態  
             //isIdle進入條件
             if (isIdle) return;
             isIdle = true;
@@ -159,7 +161,7 @@ namespace Ryan.Enemy
         /// </summary>
         private void Walk()
         {
-            if (playerInTrackRange) state = StateEmeny.Track;             //如果 玩家進入 追蹤範圍 就切換為追蹤狀態 
+            if (playerInTrackRange && !targetIsDead) state = StateEmeny.Track;             //如果 玩家進入 追蹤範圍 就切換為追蹤狀態 
 
             nma.SetDestination(v3RandomWalkFinal);                         //代理器，設定目的地(座標)                     
             ani.SetBool(parameterIdleWalk, nma.remainingDistance > 0.1);   //走路動畫 - 離目的地距離大於0.1時走路
@@ -194,6 +196,7 @@ namespace Ryan.Enemy
         /// </summary>
         private void Track()
         {
+            if (targetIsDead) return;
             if (!isTrack)
             {
                 StopAllCoroutines();
@@ -224,6 +227,9 @@ namespace Ryan.Enemy
 
             StartCoroutine(DelaySendDamageToTarget());              //啟動延遲傳送傷害給目標協程
         }
+
+        private bool targetIsDead;
+
         /// <summary>
         /// 延遲傳送傷害給目標
         /// </summary>
@@ -239,16 +245,22 @@ namespace Ryan.Enemy
                 transform.forward * v3AttackOffset.z,
                 v3AttackSize / 2, Quaternion.identity, 1 << 6);
 
-            if (hits.Length > 0) hits[0].GetComponent<HurtSystem>().Hurt(attack);
-
+            if (hits.Length > 0) targetIsDead = hits[0].GetComponent<HurtSystem>().Hurt(attack);
+            if (targetIsDead) TargetDead();
             float waitToNextAttack = timeAttack - delaySendDamage;              
            yield return new WaitForSeconds(waitToNextAttack);
 
             isAttack = false;
         }
-        #endregion        
-        [Header("面相玩家速度")]
-        public float speedLookAt = 10;
+
+        private void TargetDead()
+        {
+            state = StateEmeny.Walk;
+            isIdle = false;
+            isWalk = false;
+            nma.isStopped = false;
+        }
+
         /// <summary>
         /// 面向玩家
         /// </summary>
@@ -258,5 +270,8 @@ namespace Ryan.Enemy
             transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * speedLookAt);
             ani.SetBool(parameterIdleWalk, transform.rotation != angle);
         }
+        #endregion
+
+
     }
 }

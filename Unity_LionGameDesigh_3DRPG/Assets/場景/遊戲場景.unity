@@ -2549,6 +2549,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u77F3\u982D\u602A"
       objectReference: {fileID: 0}
+    - target: {fileID: 1067925524328404, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4408297863206454, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4660,7 +4664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 90
+      value: 90.91
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4668,7 +4672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 60
+      value: 58.72
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff645f742c673a4c85b1db215b98e2d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4910,9 +4914,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1425199692}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   parameterHurt: "\u53D7\u50B7\u89F8\u767C"
   parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
   imgHp: {fileID: 382336070}
+--- !u!114 &1425199692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425199684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a9c8c09d06ca349869f4c001a8178f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 20
+  timeAttack: 1.3
+  delaySendDamage: 0.2
+  v3AttackOffset: {x: 0, y: 0, z: 0.66}
+  v3AttackSize: {x: 1, y: 3.66, z: 1}
+  parameterAttack: "\u653B\u64CA\u5716\u5C64\u89F8\u767C"
 --- !u!1001 &1447401718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6547,8 +6581,8 @@ MonoBehaviour:
   v3AttackOffset: {x: 0, y: 1.69, z: 1.93}
   v3AttackSize: {x: 2.37, y: 2.03, z: 3.64}
   delaySendDamage: 1.5
-  state: 0
   speedLookAt: 10
+  state: 0
 --- !u!195 &2077188868
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6571,6 +6605,39 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2077188869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077188862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5029259e48289a42ba1583bed93095c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  onHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  onDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2077188867}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  parameterHurt: "\u53D7\u50B7\u89F8\u767C"
+  parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
 --- !u!1001 &2078968688
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,10 +32,11 @@ namespace Ryan
         private void Awake()
         {
             ani = GetComponent<Animator>();
+            hpMax = hp;
         }
         private void Update()
         {
-            hpMax = hp;
+            
         }
         #endregion
         #region 方法 : 公開
@@ -44,13 +45,18 @@ namespace Ryan
         /// </summary>
         /// <param name="damage">接受到的傷害</param>
         //成員希望被子類別覆寫必須加上 virtual 虛擬
-        public virtual void Hurt(float damage)
+        public virtual bool Hurt(float damage)
         {
-            if (ani.GetBool(parameterDead)) return;  //如果 死亡參數已經勾選 就跳出
+            if (ani.GetBool(parameterDead)) return true;  //如果 死亡參數已經勾選 就跳出
             hp -= damage;
             ani.SetTrigger(parameterHurt);
             onHurt.Invoke();
-            if (hp <= 0) Dead();
+            if (hp <= 0)
+            {
+                Dead();
+                return ani.GetBool(parameterDead);
+            }
+            else return false;
         }
         #endregion
         #region 方法 : 私人
