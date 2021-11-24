@@ -23,6 +23,10 @@ namespace Ryan.Dialogue
         public DialogueSystem dialogueSystem;
 
         private bool startDialogueKey { get => Input.GetKeyDown(KeyCode.E); }
+        /// <summary>
+        /// 目前任務數量
+        /// </summary>
+        private int countCurrent;
 
         #endregion
 
@@ -58,6 +62,21 @@ namespace Ryan.Dialogue
             }
             else if (!checkPlayer()) dialogueSystem.StopDialogue();
         }
+
+        
+
+        /// <summary>
+        /// 更新任務需求數量
+        /// 任務目標物件得到或死亡後處理
+        /// </summary>
+        public void UpdateMissionCount()
+        {
+            countCurrent++;
+
+            //目前狀態 等於 需求數量 狀態 等於 完成任務
+            if (countCurrent == dataDialogue.countNeed) dataDialogue.stateNPCMission = StateNPCMission.afterMission;
+        }
+
 
         private void Update()
         {

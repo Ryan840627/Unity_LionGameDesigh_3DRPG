@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-
+using Ryan.Dialogue;
 namespace Ryan.Enemy 
 { 
     /// <summary>
@@ -33,6 +33,10 @@ namespace Ryan.Enemy
         public float delaySendDamage = 0.5f;
         [Header("面相玩家速度")]
         public float speedLookAt = 10;
+        [Header("NPC 名稱")]
+        public string nameNPC = "NPC小明";
+
+        
         #endregion
 
         #region 私人欄位
@@ -54,6 +58,8 @@ namespace Ryan.Enemy
         private Vector3 v3RandomWalkFinal;
         //玩家是否在追蹤範圍內
         private bool playerInTrackRange { get => Physics.OverlapSphere(transform.position, rangeTrack, 1 << 6).Length > 0; }
+        private NPC npc;
+        private HurtSystem hurtSystem;
         #endregion
 
         #region 繪製圖形
@@ -93,7 +99,15 @@ namespace Ryan.Enemy
             ani = GetComponent<Animator>();
             nma = GetComponent<NavMeshAgent>();
             nma.speed = speed;
+            hurtSystem = GetComponent<HurtSystem>();
+
             traPlayer = GameObject.Find(namePlayer).transform;
+            npc = GameObject.Find(nameNPC).GetComponent<NPC>();
+
+            // 受傷系統 - 死亡事件觸發時 請NPC 更新數量
+            //AddListener(方法) 添加監聽器(方法)
+            hurtSystem.onDead.AddListener(npc.UpdateMissionCount);
+            
 
             nma.SetDestination(transform.position);                 //導覽器 一開始就先啟動 (不然可能有BUG)
         }
