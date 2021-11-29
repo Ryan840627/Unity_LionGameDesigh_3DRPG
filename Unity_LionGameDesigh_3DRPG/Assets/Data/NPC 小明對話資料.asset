@@ -22,5 +22,5 @@ MonoBehaviour:
   afterMission:
   - "\u4F60\u8655\u7406\u597D\u4E86!"
   - "\u8B1D\u8B1D\u4F60\u7684\u5E6B\u5FD9~"
-  countNeed: 10
-  stateNPCMission: 0
+  countNeed: 1
+  stateNPCMission: 2

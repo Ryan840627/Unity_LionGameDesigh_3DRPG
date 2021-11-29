@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Ryan.Dialogue 
 {
@@ -21,6 +22,8 @@ namespace Ryan.Dialogue
 
         [Header("對話系統")]
         public DialogueSystem dialogueSystem;
+        [Header("完成任務事件")]
+        public UnityEvent onFinish;
 
         private bool startDialogueKey { get => Input.GetKeyDown(KeyCode.E); }
         /// <summary>
@@ -51,14 +54,25 @@ namespace Ryan.Dialogue
             }
         }
         /// <summary>
+        /// 初始設定
+        /// 狀態恢復為任務前
+        /// </summary>
+        private void Initialized()
+        {
+            dataDialogue.stateNPCMission = StateNPCMission.beforeMission;
+        }
+        /// <summary>
         /// 玩家進入範圍內 並解 按下指定按鍵 請對話系統執行 開始對話
         /// 玩家退出範圍外 停止對話
+        /// 判斷狀態 : 任務前 任務中 任務後
         /// </summary>
         private void StartDialogue()
         {
             if (checkPlayer() && startDialogueKey)
             {
                 dialogueSystem.Dialogue(dataDialogue);
+                // 判斷 如果NPC 任務前 就把狀態改為 任務中
+                if (dataDialogue.stateNPCMission == StateNPCMission.beforeMission) dataDialogue.stateNPCMission = StateNPCMission.missionning;
             }
             else if (!checkPlayer()) dialogueSystem.StopDialogue();
         }
@@ -74,10 +88,17 @@ namespace Ryan.Dialogue
             countCurrent++;
 
             //目前狀態 等於 需求數量 狀態 等於 完成任務
-            if (countCurrent == dataDialogue.countNeed) dataDialogue.stateNPCMission = StateNPCMission.afterMission;
+            if (countCurrent == dataDialogue.countNeed)
+            {
+                dataDialogue.stateNPCMission = StateNPCMission.afterMission;
+                onFinish.Invoke();
+            }
         }
 
-
+        private void Awake()
+        {
+            Initialized();
+        }
         private void Update()
         {
             goTip.SetActive(checkPlayer());

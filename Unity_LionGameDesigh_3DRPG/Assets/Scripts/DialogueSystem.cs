@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections;
+
 
 namespace Ryan.Dialogue
 {
@@ -19,7 +21,8 @@ namespace Ryan.Dialogue
         public float dialogueInterval = 0.3f;
         [Header("對話按鍵")]
         public KeyCode dialogueKey = KeyCode.A;
-
+        [Header("打字事件")]
+        public UnityEvent onType;
 
         /// <summary>
         /// 開始對話
@@ -67,8 +70,21 @@ namespace Ryan.Dialogue
             textName.text = data.nameDialogue; //更新對話者
             goTriangle.SetActive(false);     //隱藏 提示圖示
 
-            string[] dialogueContents = data.beforeMission;    //儲存 對話內容
-
+            string[] dialogueContents = { };    //儲存 對話內容 為空值
+            #region 處理狀態與對話資料
+            switch (data.stateNPCMission)
+            {
+                case StateNPCMission.beforeMission:
+                    dialogueContents = data.beforeMission;
+                    break;
+                case StateNPCMission.missionning:
+                    dialogueContents = data.missionning;
+                    break;
+                case StateNPCMission.afterMission:
+                    dialogueContents = data.afterMission;
+                    break;
+            }
+            #endregion
             //遍尋每一段對話
             for (int j = 0; j < dialogueContents.Length; j++)
             {
@@ -76,6 +92,7 @@ namespace Ryan.Dialogue
                 //遍尋對話每一個字
                 for (int i = 0; i < dialogueContents[j].Length; i++)
                 {
+                    onType.Invoke();
                     textContent.text += dialogueContents[j][i];
                     yield return new WaitForSeconds(dialogueInterval);
                 }

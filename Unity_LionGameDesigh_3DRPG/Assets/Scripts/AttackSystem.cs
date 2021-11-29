@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Ryan
 {
@@ -21,8 +21,13 @@ namespace Ryan
         [Header("攻擊區域位移與尺寸")]
         public Vector3 v3AttackOffset;
         public Vector3 v3AttackSize = Vector3.one;
-        [Header("攻擊動畫參數")]
+        [Header("攻擊與走路動畫參數")]
         public string parameterAttack = "攻擊圖層觸發";
+        public string parameterWalk = "走路開關";
+        [Header("攻擊事件")]
+        public UnityEvent onAttack;
+        [Header("圖層遮色片")]
+        public AvatarMask maskAttack;
         #endregion
         #region 欄位:私人
         private Animator ani;
@@ -58,8 +63,19 @@ namespace Ryan
         #region 方法:私人
         private void Attack()
         {
+            bool isWalk = ani.GetBool(parameterWalk);
             if (keyAttack  && !isAttack)
             {
+                #region 攻擊圖層遮色片處理
+                
+                // 左腳 右腳 左腳IK 右腳IK 根部
+                maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftLeg, !isWalk);
+                maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftFootIK, !isWalk);
+                maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightFootIK, !isWalk);
+                maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightLeg, !isWalk);
+                maskAttack.SetHumanoidBodyPartActive(AvatarMaskBodyPart.Root, !isWalk);                              
+                #endregion
+                onAttack.Invoke();
                 isAttack = true;
                 ani.SetTrigger(parameterAttack);
                 StartCoroutine(DelayHit());
